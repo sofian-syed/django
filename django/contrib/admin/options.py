@@ -769,6 +769,7 @@ class ModelAdmin(BaseModelAdmin):
             "urlify.js",
             "prepopulate.js",
             "vendor/xregexp/xregexp%s.js" % extra,
+            "admin/js/filtered_select_fix.js",  # Add your custom JavaScript file here
         ]
         return forms.Media(js=["admin/js/%s" % url for url in js])
 

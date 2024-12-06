@@ -223,17 +223,22 @@
         };
 
         const updateSelectFilter = function() {
-            // If any SelectFilter widgets are a part of the new form,
-            // instantiate a new SelectFilter instance for it.
-            if (typeof SelectFilter !== 'undefined') {
-                $('.selectfilter').each(function(index, value) {
+            if (typeof SelectFilter !== "undefined") {
+                // Clear SelectBox cache to ensure a clean re-init.
+                if (typeof SelectBox !== 'undefined') {
+                    SelectBox.cache = {};
+                }
+        
+                // Re-initialize all selectfilters
+                $(".selectfilter").each(function(index, value) {
                     SelectFilter.init(value.id, this.dataset.fieldName, false);
                 });
-                $('.selectfilterstacked').each(function(index, value) {
+                $(".selectfilterstacked").each(function(index, value) {
                     SelectFilter.init(value.id, this.dataset.fieldName, true);
                 });
             }
         };
+        
 
         const initPrepopulatedFields = function(row) {
             row.find('.prepopulated_field').each(function() {
@@ -262,9 +267,14 @@
                 reinitDateTimeShortCuts();
                 updateSelectFilter();
             },
+            removed: function(row) {
+                updateInlineLabel(row);
+                reinitDateTimeShortCuts();
+                setTimeout(updateSelectFilter, 0);
+            },
             addButton: options.addButton
         });
-
+        
         return $rows;
     };
 
@@ -287,8 +297,13 @@
         };
 
         const updateSelectFilter = function() {
-            // If any SelectFilter widgets were added, instantiate a new instance.
             if (typeof SelectFilter !== "undefined") {
+                // Clear SelectBox cache to ensure a clean re-init.
+                if (typeof SelectBox !== 'undefined') {
+                    SelectBox.cache = {};
+                }
+        
+                // Re-initialize all selectfilters
                 $(".selectfilter").each(function(index, value) {
                     SelectFilter.init(value.id, this.dataset.fieldName, false);
                 });
@@ -297,6 +312,7 @@
                 });
             }
         };
+        
 
         const initPrepopulatedFields = function(row) {
             row.find('.prepopulated_field').each(function() {
@@ -326,7 +342,11 @@
             deleteCssClass: "inline-deletelink",
             deleteText: options.deleteText,
             emptyCssClass: "empty-form",
-            removed: updateInlineLabel,
+            removed: function(row) {
+                updateInlineLabel(row);
+                reinitDateTimeShortCuts();
+                setTimeout(updateSelectFilter, 0);
+            },
             added: function(row) {
                 initPrepopulatedFields(row);
                 reinitDateTimeShortCuts();
@@ -335,6 +355,7 @@
             },
             addButton: options.addButton
         });
+        
 
         return $rows;
     };
