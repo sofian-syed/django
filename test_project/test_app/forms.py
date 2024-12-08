@@ -12,6 +12,7 @@ class CustomMultiWidget(MultiWidget):
         return ["", ""]  # Provide default values if value is None
 
 class TestFormNewRendering(forms.Form):
+    # written by chat gpt
     multi_field = forms.MultiValueField(
         fields=[forms.CharField(), forms.CharField()],
         widget=CustomMultiWidget(widgets=[TextInput(), TextInput()])  # Use CustomMultiWidget

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .forms import TestFormNewRendering
-
+# written by chatgpt
 class MultiWidgetRenderTest(TestCase):
     def test_new_rendering(self):
         form = TestFormNewRendering(initial={'multi_field': 'value1,value2'})
